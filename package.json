@@ -1,0 +1,14 @@
+{
+  "name": "trie-datastructure",
+  "version": "1.0.0",
+  "description": "It is a string based trie implementation and storage of strings and perform operation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "path": "^0.12.7"
+  }
+}
