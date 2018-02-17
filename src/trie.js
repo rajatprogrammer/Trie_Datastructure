@@ -1,6 +1,5 @@
 class TrieNode {
     constructor(ch) {
-        debugger;
         this.value = ch;
         this.EndofWord = false;
         this.isLeaf = true;
@@ -12,8 +11,10 @@ class TrieOperation {
     insertNode(root, word, data = { "no_value": "no value" }) {
         debugger;
         this.crawl = root;
+        var s =0;
+        debugger;
         for (let level = 0; level < word.length; level++) {
-            if (root.Alphabet.has(word[level])) {
+            if (this.crawl.Alphabet.has(word[level])) {
                 this.crawl = this.crawl.Alphabet.get(word[level]);
             }
             else {
@@ -21,16 +22,15 @@ class TrieOperation {
                 this.crawl.isLeaf = false;
                 this.crawl.Alphabet.set(word[level], temp);
                 this.crawl = temp;
-                debugger;
             }
         }
+        debugger;
         this.crawl.EndofWord = true;
         this.crawl.data = data;
     }
     prefixDepthSearching(root, prefix) {
         let depth = 0;
         this.crawl = root;
-        debugger;
         for (let level = 0; level < prefix.length; level++) {
             if (this.crawl.Alphabet.has(prefix[level])) {
                 this.crawl = this.crawl.Alphabet.get(prefix[level]);
@@ -40,7 +40,6 @@ class TrieOperation {
                 break;
             }
         }
-        debugger;
         return (depth);
     }
     printPrefix(root, depth, prefix) {
@@ -63,6 +62,25 @@ class TrieOperation {
         }
 
     }
+    searchWordIsPresent(root, word) {
+        debugger;
+        let flag = 1;
+        for (let i = 0; i < word.length; i++) {
+            if (root.Alphabet.has(word[i])) {
+                root = root.Alphabet.get(word[i]);
+            }
+            else {
+                flag = 0;
+                break;
+            }
+        }
+        if (flag == 1 && root.EndofWord) {
+            return (true);
+        }
+        else {
+            return (false);
+        }
+    }
 
 }
 var root = new TrieNode('root');
@@ -70,13 +88,9 @@ var c2 = new TrieOperation();
 c2.insertNode(root, "rohan", { "phone": 9412276612 });
 debugger;
 c2.insertNode(root, "rajan", { "phone": 9412276612 });
-debugger;
 c2.insertNode(root, "ono", { "phone": 9412276612 });
-debugger;
 c2.insertNode(root, "onmq", { "phone": 9412276612 });
-debugger;
 c2.insertNode(root, "omr", { "phone": 9412276612 });
-debugger;
-depth = c2.prefixDepthSearching(root, "roh");
+depth = c2.searchWordIsPresent(root, "ono");
 debugger;
 let iterator = root.Alphabet.values();
