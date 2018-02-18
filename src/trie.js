@@ -1,3 +1,4 @@
+var async = require('async');
 class TrieNode {
     constructor(ch) {
         this.value = ch;
@@ -18,6 +19,7 @@ class TrieOperation {
                 let temp = new TrieNode(word[level]);
                 this.crawl.isLeaf = false;
                 this.crawl.Alphabet.set(word[level], temp);
+                this.crawl.Alphabet = this.sortKeyMap(this.crawl.Alphabet);
                 this.crawl = temp;
             }
         }
@@ -51,20 +53,71 @@ class TrieOperation {
     findLongestPrefix(root, arrayOfString) {
         this.crawl = root;
     }
+    asyncTraversalOfTree(root, cb) {
+
+    }
     preorderTree(root, store) {
+        debugger;
         if (root == null) {
-            return (false);
+            return;
         }
         else {
             for (let level = 0; level < this.childOfNode(root); level++) {
-                root.Alphabet = this.sortKeyMap(root.Alphabet);
+                // this.asyncTraversalOfTree(, () => {
+
+                // });
             }
 
         }
 
     }
+    preorderAsyncTree(root, store) {
+        // async.parallel([function (callback) {
+        //     // setTimeout(function () {
+        //     //     callback(null, 'one');
+        //     // }, 200);
+        //     if (root == null) {
+        //         return;
+        //     }
+        //     else {
+        //         debugger;
+        //         for (let level = 0; level < this.childOfNode(root); level++) {
+        //             root.Alphabet = this.sortKeyMap(root.Alphabet);
+        //             pr
+        //         }
+        //     }
+        // },], () => {
+
+        // })
+        // if (root == null) {
+        //     return;
+        // }
+        // else {
+        //     for (let level = 0; level < this.childOfNode(root); level++) {
+        //         root.Alphabet = this.sortKeyMap(root.Alphabet);
+        //         // this.asyncTraversalOfTree(, () => {
+
+        //         // });
+        //     }
+
+        // }
+        new Promise((resolve, reject) => {
+            this.crawl = root.Alphabet;
+            let store = [];
+            if (this.crawl == null) {
+                return (store)
+            }
+            else {
+                this.crawl.forEach((value, key) => {
+                    async.parallel([], () => {
+
+                    })
+                });
+            }
+        })
+
+    }
     searchWordIsPresent(root, word) {
-        debugger;
         let flag = 1;
         for (let i = 0; i < word.length; i++) {
             if (root.Alphabet.has(word[i])) {
@@ -95,9 +148,28 @@ c2.insertNode(root, "rohan", { "phone": 9412276612 });
 // c2.insertNode(root, "lmr", { "phone": 9412276612 });
 debugger;
 //c2.sortKeyMap(root.Alphabet);
+c2.insertNode(root, "mrt", { "phone": 9412276612 });
+c2.insertNode(root, "drt", { "phone": 9412276612 });
 c2.insertNode(root, "rajan", { "phone": 9412276612 });
 c2.insertNode(root, "ono", { "phone": 9412276612 });
+c2.insertNode(root, "art", { "phone": 9412276612 });
 c2.insertNode(root, "onmq", { "phone": 9412276612 });
 c2.insertNode(root, "omr", { "phone": 9412276612 });
 console.log(c2.searchWordIsPresent(root, "rohanm"));
+debugger;
+//c2.preorderTree(root, []);
+debugger;
+// var myIterable = root.Alphabet;
+// // myIterable[Symbol.iterator] = function* () {
+// //     yield 1;
+// //     yield 2;
+// // };
+// // for (let value of myIterable) {
+// //     debugger;
+// //     console.log(value);
+// // }
+// myIterable.forEach((value, key) => {
+//     debugger;
+//     console.log(key + ":" + value);
+// });
 //let iterator = root.Alphabet.values();
