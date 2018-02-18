@@ -57,7 +57,7 @@ class TrieOperation {
         }
         else {
             for (let level = 0; level < this.childOfNode(root); level++) {
-                root.Alphabet = this.sortKeyMap(root.Alphabet)
+                root.Alphabet = this.sortKeyMap(root.Alphabet);
             }
 
         }
