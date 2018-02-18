@@ -2,17 +2,14 @@ class TrieNode {
     constructor(ch) {
         this.value = ch;
         this.EndofWord = false;
-        this.isLeaf = true;
+        // this.isLeaf = true;
         this.Alphabet = new Map();
         this.data = {};
     }
 }
 class TrieOperation {
     insertNode(root, word, data = { "no_value": "no value" }) {
-        debugger;
         this.crawl = root;
-        var s =0;
-        debugger;
         for (let level = 0; level < word.length; level++) {
             if (this.crawl.Alphabet.has(word[level])) {
                 this.crawl = this.crawl.Alphabet.get(word[level]);
@@ -24,7 +21,6 @@ class TrieOperation {
                 this.crawl = temp;
             }
         }
-        debugger;
         this.crawl.EndofWord = true;
         this.crawl.data = data;
     }
@@ -40,7 +36,10 @@ class TrieOperation {
                 break;
             }
         }
-        return (depth);
+        return (this.printPrefix(this.crawl, depth, prefix));
+    }
+    sortKeyMap(map) {
+        return (new Map([...map.entries()].sort()));
     }
     printPrefix(root, depth, prefix) {
         let store = [];
@@ -53,11 +52,13 @@ class TrieOperation {
         this.crawl = root;
     }
     preorderTree(root, store) {
-        if (root.isLeaf == true) {
+        if (root == null) {
             return (false);
         }
         else {
-            //for (let level = 0; level < this.childOfNode(root))
+            for (let level = 0; level < this.childOfNode(root); level++) {
+                root.Alphabet = this.sortKeyMap(root.Alphabet)
+            }
 
         }
 
@@ -74,7 +75,7 @@ class TrieOperation {
                 break;
             }
         }
-        if (flag == 1 && root.EndofWord) {
+        if (flag == 1 && root.EndofWord == true) {
             return (true);
         }
         else {
@@ -85,12 +86,18 @@ class TrieOperation {
 }
 var root = new TrieNode('root');
 var c2 = new TrieOperation();
-c2.insertNode(root, "rohan", { "phone": 9412276612 });
 debugger;
+c2.insertNode(root, "rohan", { "phone": 9412276612 });
+// c2.insertNode(root, "iajan", { "phone": 9412276612 });
+// c2.insertNode(root, "bno", { "phone": 9412276612 });
+// c2.insertNode(root, "anmq", { "phone": 9412276612 });
+// c2.insertNode(root, "nmrt", { "phone": 9412276612 });
+// c2.insertNode(root, "lmr", { "phone": 9412276612 });
+debugger;
+//c2.sortKeyMap(root.Alphabet);
 c2.insertNode(root, "rajan", { "phone": 9412276612 });
 c2.insertNode(root, "ono", { "phone": 9412276612 });
 c2.insertNode(root, "onmq", { "phone": 9412276612 });
 c2.insertNode(root, "omr", { "phone": 9412276612 });
-depth = c2.searchWordIsPresent(root, "ono");
-debugger;
-let iterator = root.Alphabet.values();
+console.log(c2.searchWordIsPresent(root, "rohanm"));
+//let iterator = root.Alphabet.values();
