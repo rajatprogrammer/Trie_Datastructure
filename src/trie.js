@@ -88,6 +88,22 @@ class TrieOperation {
             })
         }
     }
+    searchWordRecursive(root, word, i) {
+        debugger;
+        if ((root) && root.EndofWord == true && word.length == i) {
+            return (true)
+        }
+        else {
+            if (root.Alphabet.has(word[i])) {
+                debugger;
+                return (this.searchWordRecursive(root.Alphabet.get(word[i]), word, ++i));
+            }
+            else {
+                debugger;
+                return (false);
+            }
+        }
+    }
     searchWordIsPresent(root, word) {
         let flag = 1;
         for (let i = 0; i < word.length; i++) {
@@ -126,9 +142,10 @@ c2.insertNode(root, "rajan", { "phone": 9412276612 });
 // c2.insertNode(root, "art", { "phone": 9412276612 });
 // c2.insertNode(root, "onmq", { "phone": 9412276612 });
 // c2.insertNode(root, "omr", { "phone": 9412276612 });
-console.log(c2.searchWordIsPresent(root, "rohanm"));
 debugger;
-c2.preorderAsyncTree(root)
+console.log(c2.searchWordRecursive(root, "drt", 0));
+debugger;
+//c2.preorderAsyncTree(root)
 //c2.preorderTree(root, []);
 debugger;
 // var myIterable = root.Alphabet;
