@@ -71,51 +71,22 @@ class TrieOperation {
         }
 
     }
-    preorderAsyncTree(root, store) {
-        // async.parallel([function (callback) {
-        //     // setTimeout(function () {
-        //     //     callback(null, 'one');
-        //     // }, 200);
-        //     if (root == null) {
-        //         return;
-        //     }
-        //     else {
-        //         debugger;
-        //         for (let level = 0; level < this.childOfNode(root); level++) {
-        //             root.Alphabet = this.sortKeyMap(root.Alphabet);
-        //             pr
-        //         }
-        //     }
-        // },], () => {
-
-        // })
-        // if (root == null) {
-        //     return;
-        // }
-        // else {
-        //     for (let level = 0; level < this.childOfNode(root); level++) {
-        //         root.Alphabet = this.sortKeyMap(root.Alphabet);
-        //         // this.asyncTraversalOfTree(, () => {
-
-        //         // });
-        //     }
-
-        // }
-        new Promise((resolve, reject) => {
-            this.crawl = root.Alphabet;
-            let store = [];
-            if (this.crawl == null) {
-                return (store)
-            }
-            else {
-                this.crawl.forEach((value, key) => {
-                    async.parallel([], () => {
-
-                    })
-                });
-            }
-        })
-
+    preorderAsyncTree(root) {
+        this.crawl = root.Alphabet;
+        let store = [];
+        if (this.crawl == null) {
+            return
+        }
+        else {
+            this.crawl.forEach((value, key) => {
+                if (this.crawl != null) {
+                    store.push(key);
+                    this.crawl = value;
+                    console.log(store);
+                    this.preorderAsyncTree(value);
+                }
+            })
+        }
     }
     searchWordIsPresent(root, word) {
         let flag = 1;
@@ -151,12 +122,13 @@ debugger;
 c2.insertNode(root, "mrt", { "phone": 9412276612 });
 c2.insertNode(root, "drt", { "phone": 9412276612 });
 c2.insertNode(root, "rajan", { "phone": 9412276612 });
-c2.insertNode(root, "ono", { "phone": 9412276612 });
-c2.insertNode(root, "art", { "phone": 9412276612 });
-c2.insertNode(root, "onmq", { "phone": 9412276612 });
-c2.insertNode(root, "omr", { "phone": 9412276612 });
+// c2.insertNode(root, "ono", { "phone": 9412276612 });
+// c2.insertNode(root, "art", { "phone": 9412276612 });
+// c2.insertNode(root, "onmq", { "phone": 9412276612 });
+// c2.insertNode(root, "omr", { "phone": 9412276612 });
 console.log(c2.searchWordIsPresent(root, "rohanm"));
 debugger;
+c2.preorderAsyncTree(root)
 //c2.preorderTree(root, []);
 debugger;
 // var myIterable = root.Alphabet;
