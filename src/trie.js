@@ -1,9 +1,8 @@
-var async = require('async');
+
 class TrieNode {
     constructor(ch) {
         this.value = ch;
         this.EndofWord = false;
-        // this.isLeaf = true;
         this.Alphabet = new Map();
         this.data = {};
     }
@@ -104,6 +103,49 @@ class TrieOperation {
             }
         }
     }
+    deleteWordRecursiveSoft(root, word, level) {
+        if ((root) && root.EndofWord == true && word.length == level) {
+            root.EndofWord = false;
+            return (true);
+        }
+        else {
+            if (root.Alphabet.has(word[level])) {
+
+                return (this.deleteWordRecursiveSoft(root.Alphabet.get(word[level]), word, ++level));
+            }
+            else {
+                return (false);
+            }
+        }
+    }
+    deleteWordRecursiveHard(root, word, level) {
+        if (root) {
+            if (root.EndofWord) {
+                if (this.childOfNode(root) == 0) {
+                    return (delete (root.Alphabet));
+                }
+                else {
+                    return (false);
+                }
+            }
+            else {
+                if (root.Alphabet.has(word[level])) {
+                    if (this.deleteWordRecursiveHard(root.Alphabet.get(word[level]), word, ++level)) {
+                        debugger;
+                        if (this.childOfNode(root) <= 1) {
+                            return (delete (root.Alphabet));
+                        }
+                        else {
+                            return (false);
+                        }
+                    }
+                    else {
+                        return (false);
+                    }
+                }
+            }
+        }
+    }
     searchWordIsPresent(root, word) {
         let flag = 1;
         for (let i = 0; i < word.length; i++) {
@@ -124,10 +166,12 @@ class TrieOperation {
     }
 
 }
-var root = new TrieNode('root');
+debugger;
+root = new TrieNode('root');
 var c2 = new TrieOperation();
 debugger;
 c2.insertNode(root, "rohan", { "phone": 9412276612 });
+//c2.insertNode(root, "rohanc", { "phone": 9412276612 });
 // c2.insertNode(root, "iajan", { "phone": 9412276612 });
 // c2.insertNode(root, "bno", { "phone": 9412276612 });
 // c2.insertNode(root, "anmq", { "phone": 9412276612 });
@@ -135,16 +179,19 @@ c2.insertNode(root, "rohan", { "phone": 9412276612 });
 // c2.insertNode(root, "lmr", { "phone": 9412276612 });
 debugger;
 //c2.sortKeyMap(root.Alphabet);
-c2.insertNode(root, "mrt", { "phone": 9412276612 });
-c2.insertNode(root, "drt", { "phone": 9412276612 });
-c2.insertNode(root, "rajan", { "phone": 9412276612 });
+// c2.insertNode(root, "mrt", { "phone": 9412276612 });
+// c2.insertNode(root, "drt", { "phone": 9412276612 });
+// c2.insertNode(root, "rajan", { "phone": 9412276612 });
 // c2.insertNode(root, "ono", { "phone": 9412276612 });
 // c2.insertNode(root, "art", { "phone": 9412276612 });
 // c2.insertNode(root, "onmq", { "phone": 9412276612 });
 // c2.insertNode(root, "omr", { "phone": 9412276612 });
+//debugger;
+//console.log(c2.searchWordRecursive(root, "drt", 0));
 debugger;
-console.log(c2.searchWordRecursive(root, "drt", 0));
+console.log(c2.deleteWordRecursiveHard(root, "rohan", 0));
 debugger;
+console.log(root);
 //c2.preorderAsyncTree(root)
 //c2.preorderTree(root, []);
 debugger;
