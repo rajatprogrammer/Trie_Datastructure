@@ -122,7 +122,8 @@ class TrieOperation {
         if (root) {
             if (root.EndofWord) {
                 if (this.childOfNode(root) == 0) {
-                    return (delete (root.Alphabet));
+                    root.Alphabet.clear();
+                    return (true);
                 }
                 else {
                     return (false);
@@ -133,7 +134,8 @@ class TrieOperation {
                     if (this.deleteWordRecursiveHard(root.Alphabet.get(word[level]), word, ++level)) {
                         debugger;
                         if (this.childOfNode(root) <= 1) {
-                            return (delete (root.Alphabet));
+                            root.Alphabet.clear();
+                            return (true);
                         }
                         else {
                             return (false);
