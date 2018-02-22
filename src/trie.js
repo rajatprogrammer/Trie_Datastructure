@@ -1,8 +1,9 @@
-
+'use strict'
 class TrieNode {
     constructor(ch) {
         this.value = ch;
         this.EndofWord = false;
+        // this.isLeaf = true;
         this.Alphabet = new Map();
         this.data = {};
     }
@@ -49,8 +50,36 @@ class TrieOperation {
     childOfNode(node) {
         return (node.Alphabet.size);
     }
-    findLongestPrefix(root, arrayOfString) {
-        this.crawl = root;
+    *iterator()
+    {
+        
+    }
+    checkKeyPresent(root,char)
+    {
+        if(root.Alphabet.has(char))
+        {
+            return(true);
+        }
+        else{
+            return(false);
+        }
+
+    }
+    LongestPrefixFromTree(root,pref=[]) {
+      if(root)
+      {
+          if(root.Alphabet.size==1)
+          {
+            root.Alphabet.forEach((k, v, m) => pref.push(v));
+            return(this.LongestPrefixFromTree(root.Alphabet.get(pref[pref.length-1]),pref));
+          }
+          else{
+            return (pref);
+          }
+      }  
+      else{
+          return(pref);
+      }
     }
     asyncTraversalOfTree(root, cb) {
 
@@ -103,12 +132,14 @@ class TrieOperation {
             }
         }
     }
-    deleteWordRecursiveSoft(root, word, level) {
+    
+    deleteWordRecursiveSoft(root,word,level)
+    {
         if ((root) && root.EndofWord == true && word.length == level) {
-            root.EndofWord = false;
-            return (true);
-        }
-        else {
+                root.EndofWord = false;
+                return(true);
+        } 
+        else{
             if (root.Alphabet.has(word[level])) {
 
                 return (this.deleteWordRecursiveSoft(root.Alphabet.get(word[level]), word, ++level));
@@ -118,35 +149,34 @@ class TrieOperation {
             }
         }
     }
-    deleteWordRecursiveHard(root, word, level) {
+    deleteWordRecursiveHard(root,word,itr,level)
+    {
         if (root) {
-            if (root.EndofWord) {
-                if (this.childOfNode(root) == 0) {
-                    root.Alphabet.clear();
-                    return (true);
+            if(root.EndofWord)
+            {
+                if(this.childOfNode(root)==0)
+               {
+                   debugger;
+
+                    return(delete(root.root));
+               }
+               else{
+                    return(false);
+               }
+            }
+            else{
+                if (root.Alphabet.has(word[level])) {
+
+                    return (this.deleteWordRecursiveHard(root.Alphabet.get(word[level]), word,++itr, ++level));
                 }
-                else {
+                else if(!(root.Alphabet.has(word[level])))  {
                     return (false);
                 }
-            }
-            else {
-                if (root.Alphabet.has(word[level])) {
-                    if (this.deleteWordRecursiveHard(root.Alphabet.get(word[level]), word, ++level)) {
-                        debugger;
-                        if (this.childOfNode(root) <= 1) {
-                            root.Alphabet.clear();
-                            return (true);
-                        }
-                        else {
-                            return (false);
-                        }
-                    }
-                    else {
-                        return (false);
-                    }
+                else{
+                    
                 }
             }
-        }
+        } 
     }
     searchWordIsPresent(root, word) {
         let flag = 1;
@@ -169,11 +199,12 @@ class TrieOperation {
 
 }
 debugger;
-root = new TrieNode('root');
+var root = new TrieNode('root');
 var c2 = new TrieOperation();
 debugger;
 c2.insertNode(root, "rohan", { "phone": 9412276612 });
-//c2.insertNode(root, "rohanc", { "phone": 9412276612 });
+c2.insertNode(root, "rohanc", { "phone": 9412276612 });
+c2.insertNode(root, "rohac", { "phone": 9412276612 });
 // c2.insertNode(root, "iajan", { "phone": 9412276612 });
 // c2.insertNode(root, "bno", { "phone": 9412276612 });
 // c2.insertNode(root, "anmq", { "phone": 9412276612 });
@@ -191,7 +222,9 @@ debugger;
 //debugger;
 //console.log(c2.searchWordRecursive(root, "drt", 0));
 debugger;
-console.log(c2.deleteWordRecursiveHard(root, "rohan", 0));
+// console.log(c2.deleteWordRecursiveSoft(root, "rohan", 0));
+// console.log(c2.searchWordRecursive(root, "rohan", 0));
+console.log(c2.LongestPrefixFromTree(root));
 debugger;
 console.log(root);
 //c2.preorderAsyncTree(root)
