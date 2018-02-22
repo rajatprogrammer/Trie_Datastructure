@@ -1,4 +1,3 @@
-'use strict'
 class TrieNode {
     constructor(ch) {
         this.value = ch;
@@ -6,6 +5,12 @@ class TrieNode {
         // this.isLeaf = true;
         this.Alphabet = new Map();
         this.data = {};
+    }
+    deleteTree(root)
+    {
+        root = null;
+        debugger;
+        return(true);
     }
 }
 class TrieOperation {
@@ -43,8 +48,14 @@ class TrieOperation {
     sortKeyMap(map) {
         return (new Map([...map.entries()].sort()));
     }
-    printPrefix(root, depth, prefix) {
-        let store = [];
+    updateDataOfString(root,data = { "no_value": "no value" }) {
+        if(root=this.searchWordRecursiveReturnRoot(root))
+        {
+            root.data
+        }
+        else{
+
+        }
 
     }
     childOfNode(node) {
@@ -81,39 +92,81 @@ class TrieOperation {
           return(pref);
       }
     }
-    asyncTraversalOfTree(root, cb) {
-
-    }
-    preorderTree(root, store) {
+    printLevel(root, store=[]) {
         debugger;
         if (root == null) {
             return;
         }
         else {
             for (let level = 0; level < this.childOfNode(root); level++) {
-                // this.asyncTraversalOfTree(, () => {
-
-                // });
+            
             }
 
         }
 
     }
-    preorderAsyncTree(root) {
-        this.crawl = root.Alphabet;
-        let store = [];
-        if (this.crawl == null) {
-            return
+    preorderAsyncTree(root,store=[],temp=[]) {
+        this.crawl = root;
+         if(this.crawl.EndofWord==true)
+        {
+            debugger;
+            //store.push(temp);
+            temp.push('|');
+            console.log("hello" + temp);
+           // temp= null
+            return(temp);
         }
         else {
-            this.crawl.forEach((value, key) => {
+            this.crawl.Alphabet.forEach((value, key) => {
                 if (this.crawl != null) {
-                    store.push(key);
+                    temp.push(key);
+                    console.log(key);
                     this.crawl = value;
-                    console.log(store);
-                    this.preorderAsyncTree(value);
+                    //console.log(value);
+                    return(this.preorderAsyncTree(this.crawl,store,temp));
+                }
+                else{
+                    return(temp);
                 }
             })
+        }
+    }
+    preorderAsyncTree1(root,store=[],temp=[]) {
+        this.crawl = root;
+        if(this.crawl == null)
+        {
+            return false;
+        }
+        else {
+            this.crawl.Alphabet.forEach((value, key) => {
+                if (this.crawl != null) {
+                    if(this.crawl.EndofWord==true)
+                    {
+                        store.push(temp)
+                        console.log(store);
+                        temp = [];
+                    }
+                    // temp.push(key);
+                    // console.log(key);
+                     this.crawl = value;
+                     temp.push(key);
+                    // //console.log(value);
+                    this.preorderAsyncTree1(this.crawl,store,temp);
+                }
+            })
+        }
+    }
+    searchWordRecursiveReturnRoot(root, word, i) {
+        if ((root) && root.EndofWord == true && word.length == i) {
+            return (root)
+        }
+        else {
+            if (root.Alphabet.has(word[i])) {
+                return (this.searchWordRecursive(root.Alphabet.get(word[i]), word, ++i));
+            }
+            else {
+                return (false);
+            }
         }
     }
     searchWordRecursive(root, word, i) {
@@ -196,21 +249,24 @@ class TrieOperation {
             return (false);
         }
     }
-
 }
 debugger;
-var root = new TrieNode('root');
-var c2 = new TrieOperation();
+ var root = new TrieNode('root');
+ var c2 = new TrieOperation();
 debugger;
 c2.insertNode(root, "rohan", { "phone": 9412276612 });
 c2.insertNode(root, "rohanc", { "phone": 9412276612 });
 c2.insertNode(root, "rohac", { "phone": 9412276612 });
-// c2.insertNode(root, "iajan", { "phone": 9412276612 });
-// c2.insertNode(root, "bno", { "phone": 9412276612 });
-// c2.insertNode(root, "anmq", { "phone": 9412276612 });
-// c2.insertNode(root, "nmrt", { "phone": 9412276612 });
-// c2.insertNode(root, "lmr", { "phone": 9412276612 });
+c2.insertNode(root, "iajan", { "phone": 9412276612 });
+c2.insertNode(root, "iajop", { "phone": 9412276612 });
+c2.insertNode(root, "iajcn", { "phone": 9412276612 });
+c2.insertNode(root, "bno", { "phone": 9412276612 });
+c2.insertNode(root, "anmq", { "phone": 9412276612 });
+c2.insertNode(root, "nmrt", { "phone": 9412276612 });
+c2.insertNode(root, "lmr", { "phone": 9412276612 });
 debugger;
+var data = c2.preorderAsyncTree1(root)
+console.log(data);
 //c2.sortKeyMap(root.Alphabet);
 // c2.insertNode(root, "mrt", { "phone": 9412276612 });
 // c2.insertNode(root, "drt", { "phone": 9412276612 });
@@ -224,9 +280,10 @@ debugger;
 debugger;
 // console.log(c2.deleteWordRecursiveSoft(root, "rohan", 0));
 // console.log(c2.searchWordRecursive(root, "rohan", 0));
-console.log(c2.LongestPrefixFromTree(root));
-debugger;
-console.log(root);
+// console.log(c2.LongestPrefixFromTree(root));
+// console.log(root.deleteTree(root));
+// debugger;
+//console.log(root);
 //c2.preorderAsyncTree(root)
 //c2.preorderTree(root, []);
 debugger;
