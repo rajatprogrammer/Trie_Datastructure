@@ -18,6 +18,7 @@ class TrieNode {
 }
 class TrieOperation {
     constructor(root,arrayOfWord){
+        debugger;
         let counter = 0;
         arrayOfWord.forEach((element)=>{
             this.insertNode(root,element.word,element.data,counter);
@@ -144,14 +145,13 @@ class TrieOperation {
     }
     printSorted(root,arrayOfWord,sorted=[])
     {
-        let counter = 0;
-        this.preorderSorted(root).forEach((index)=>{
-             sorted[counter] = arrayOfWord[index];  
-             ++counter;
-        })
+        let data = this.preorderSorted(root);
+        data.forEach((index)=>{
+             sorted[index.counter] = arrayOfWord[index.index]; 
+        });
         return(sorted);
     }
-    preorderSorted(root,arr = [],counter=0) {
+    preorderSorted(root,arr=[]) {
         if(root==null)
         {
             return false;
@@ -160,14 +160,23 @@ class TrieOperation {
               if(value!=null)
               {
                     if(value.EndofWord==true)
-                    {
-                        arr[counter] = value.index;
-                        counter = counter+1;
+                    {                                               
+                        if(arr.length!=0)
+                        {
+                            let counter = arr[arr.length-1]['counter'];
+                            counter = counter+1;
+                            arr[counter] = {index:value.index,counter:counter};
+                        }
+                        else{
+                            let counter =0;
+                            arr[counter] = {index:value.index,counter:counter};
+                        }
                     }
               }
-                this.preorderSorted(value,arr,counter);
+                this.preorderSorted(value,arr);
         });
         return(arr);
+       
     }
     searchWordRecursiveReturnRoot(root, word, i) {
         if ((root) && root.EndofWord == true && word.length == i) {
@@ -264,9 +273,22 @@ class TrieOperation {
 }
 debugger;
  var root = new TrieNode('root');
- let data = [{word:"rohan",data:7387487384},{word:"rohac",data:676743},{word:"rohanc",data:676743}];
- var c2 = new TrieOperation(root,data);
- console.log(c2.printSorted(root,data));
+var data = [
+ {word:"rohan", data:{ "phone": 9412276612 }},
+ {word:"rohanc", data:{ "phone": 9412276612 }},
+ {word:"rohac", data:{ "phone": 9412276612 }},
+ {word:"iajan", data:{ "phone": 9412276612 }},
+{word:"iajop", data:{ "phone": 9412276612 }},
+{word:"iajcn", data: { "phone": 9412276612 }},
+ {word:"bno", data:{ "phone": 9412276612 }},
+ {word:"anmq", data:{ "phone": 9412276612 }},
+ {word:"nmrt", data:{ "phone": 9412276612 }},
+ {word:"lmr", data:{ "phone": 9412276612 }}
+];
+debugger;
+var c2 = new TrieOperation(root,data);
+debugger;
+console.log(c2.printSorted(root,data));
 debugger;
 // c2.insertNode(root, "rohan", { "phone": 9412276612 });
 // c2.insertNode(root, "rohanc", { "phone": 9412276612 });
