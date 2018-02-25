@@ -1,20 +1,30 @@
 class TrieNode {
-    constructor(ch) {
+    constructor(ch='root') {
         this.value = ch;
         this.EndofWord = false;
-        // this.isLeaf = true;
         this.Alphabet = new Map();
         this.data = {};
     }
     deleteTree(root)
     {
         root = null;
-        debugger;
+        return(true);
+    }
+    flushTree(root)
+    {
+        delete(root.Alphabet);
         return(true);
     }
 }
 class TrieOperation {
-    insertNode(root, word, data = { "no_value": "no value" }) {
+    constructor(root,arrayOfWord){
+        let counter = 0;
+        arrayOfWord.forEach((element)=>{
+            this.insertNode(root,element.word,element.data,counter);
+            ++counter;
+        });
+    }
+    insertNode(root, word, data = { "no_value": "no value" },index) {
         this.crawl = root;
         for (let level = 0; level < word.length; level++) {
             if (this.crawl.Alphabet.has(word[level])) {
@@ -30,6 +40,7 @@ class TrieOperation {
         }
         this.crawl.EndofWord = true;
         this.crawl.data = data;
+        this.crawl.index = index;
     }
     prefixDepthSearching(root, prefix) {
         let depth = 0;
@@ -131,30 +142,32 @@ class TrieOperation {
             })
         }
     }
-    preorderAsyncTree1(root,store=[],temp=[]) {
-        this.crawl = root;
-        if(this.crawl == null)
+    printSorted(root,arrayOfWord,sorted=[])
+    {
+        let counter = 0;
+        this.preorderSorted(root).forEach((index)=>{
+             sorted[counter] = arrayOfWord[index];  
+             ++counter;
+        })
+        return(sorted);
+    }
+    preorderSorted(root,arr = [],counter=0) {
+        if(root==null)
         {
             return false;
         }
-        else {
-            this.crawl.Alphabet.forEach((value, key) => {
-                if (this.crawl != null) {
-                    if(this.crawl.EndofWord==true)
+        root.Alphabet.forEach((value, key) => {
+              if(value!=null)
+              {
+                    if(value.EndofWord==true)
                     {
-                        store.push(temp)
-                        console.log(store);
-                        temp = [];
+                        arr[counter] = value.index;
+                        counter = counter+1;
                     }
-                    // temp.push(key);
-                    // console.log(key);
-                     this.crawl = value;
-                     temp.push(key);
-                    // //console.log(value);
-                    this.preorderAsyncTree1(this.crawl,store,temp);
-                }
-            })
-        }
+              }
+                this.preorderSorted(value,arr,counter);
+        });
+        return(arr);
     }
     searchWordRecursiveReturnRoot(root, word, i) {
         if ((root) && root.EndofWord == true && word.length == i) {
@@ -209,7 +222,6 @@ class TrieOperation {
             {
                 if(this.childOfNode(root)==0)
                {
-                   debugger;
 
                     return(delete(root.root));
                }
@@ -252,21 +264,23 @@ class TrieOperation {
 }
 debugger;
  var root = new TrieNode('root');
- var c2 = new TrieOperation();
+ let data = [{word:"rohan",data:7387487384},{word:"rohac",data:676743},{word:"rohanc",data:676743}];
+ var c2 = new TrieOperation(root,data);
+ console.log(c2.printSorted(root,data));
 debugger;
-c2.insertNode(root, "rohan", { "phone": 9412276612 });
-c2.insertNode(root, "rohanc", { "phone": 9412276612 });
-c2.insertNode(root, "rohac", { "phone": 9412276612 });
-c2.insertNode(root, "iajan", { "phone": 9412276612 });
-c2.insertNode(root, "iajop", { "phone": 9412276612 });
-c2.insertNode(root, "iajcn", { "phone": 9412276612 });
-c2.insertNode(root, "bno", { "phone": 9412276612 });
-c2.insertNode(root, "anmq", { "phone": 9412276612 });
-c2.insertNode(root, "nmrt", { "phone": 9412276612 });
-c2.insertNode(root, "lmr", { "phone": 9412276612 });
-debugger;
-var data = c2.preorderAsyncTree1(root)
-console.log(data);
+// c2.insertNode(root, "rohan", { "phone": 9412276612 });
+// c2.insertNode(root, "rohanc", { "phone": 9412276612 });
+// c2.insertNode(root, "rohac", { "phone": 9412276612 });
+// // c2.insertNode(root, "iajan", { "phone": 9412276612 });
+// // c2.insertNode(root, "iajop", { "phone": 9412276612 });
+// // c2.insertNode(root, "iajcn", { "phone": 9412276612 });
+// // c2.insertNode(root, "bno", { "phone": 9412276612 });
+// // c2.insertNode(root, "anmq", { "phone": 9412276612 });
+// // c2.insertNode(root, "nmrt", { "phone": 9412276612 });
+// // c2.insertNode(root, "lmr", { "phone": 9412276612 });
+// debugger;
+// var data = c2.preorderAsyncTree2(root)
+// console.log(data);
 //c2.sortKeyMap(root.Alphabet);
 // c2.insertNode(root, "mrt", { "phone": 9412276612 });
 // c2.insertNode(root, "drt", { "phone": 9412276612 });
