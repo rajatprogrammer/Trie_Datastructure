@@ -1,3 +1,4 @@
+"use strict";
 class TrieNode {
     constructor(ch='root') {
         this.value = ch;
@@ -7,18 +8,11 @@ class TrieNode {
     }
     deleteTree(root)
     {
-        root = null;
-        return(true);
-    }
-    flushTree(root)
-    {
-        delete(root.Alphabet);
         return(true);
     }
 }
 class TrieOperation {
     constructor(root,arrayOfWord){
-        debugger;
         let counter = 0;
         arrayOfWord.forEach((element)=>{
             this.insertNode(root,element.word,element.data,counter);
@@ -117,7 +111,7 @@ class TrieOperation {
         }
 
     }
-    preorderAsyncTree(root,store=[],temp=[]) {
+    preorderTree(root,store=[],temp=[]) {
         this.crawl = root;
          if(this.crawl.EndofWord==true)
         {
@@ -146,6 +140,7 @@ class TrieOperation {
     printSorted(root,arrayOfWord,sorted=[])
     {
         let data = this.preorderSorted(root);
+
         data.forEach((index)=>{
              sorted[index.counter] = arrayOfWord[index.index]; 
         });
@@ -155,26 +150,29 @@ class TrieOperation {
         if(root==null)
         {
             return false;
+        } 
+        if(root.Alphabet!=undefined)
+        {
+            root.Alphabet.forEach((value, key) => {
+                if(value!=null)
+                {
+                      if(value.EndofWord==true)
+                      {                                               
+                          if(arr.length!=0)
+                          {
+                              let counter = arr[arr.length-1]['counter'];
+                              counter = counter+1;
+                              arr[counter] = {index:value.index,counter:counter};
+                          }
+                          else{
+                              let counter =0;
+                              arr[counter] = {index:value.index,counter:counter};
+                          }
+                      }
+                }
+                  this.preorderSorted(value,arr);
+          });
         }
-        root.Alphabet.forEach((value, key) => {
-              if(value!=null)
-              {
-                    if(value.EndofWord==true)
-                    {                                               
-                        if(arr.length!=0)
-                        {
-                            let counter = arr[arr.length-1]['counter'];
-                            counter = counter+1;
-                            arr[counter] = {index:value.index,counter:counter};
-                        }
-                        else{
-                            let counter =0;
-                            arr[counter] = {index:value.index,counter:counter};
-                        }
-                    }
-              }
-                this.preorderSorted(value,arr);
-        });
         return(arr);
        
     }
@@ -191,14 +189,12 @@ class TrieOperation {
             }
         }
     }
-    searchWordRecursive(root, word, i) {
-        debugger;
+    searchWordRecursive(root, word, i=0) {
         if ((root) && root.EndofWord == true && word.length == i) {
             return (true)
         }
         else {
             if (root.Alphabet.has(word[i])) {
-                debugger;
                 return (this.searchWordRecursive(root.Alphabet.get(word[i]), word, ++i));
             }
             else {
@@ -207,7 +203,6 @@ class TrieOperation {
             }
         }
     }
-    
     deleteWordRecursiveSoft(root,word,level)
     {
         if ((root) && root.EndofWord == true && word.length == level) {
@@ -224,33 +219,74 @@ class TrieOperation {
             }
         }
     }
-    deleteWordRecursiveHard(root,word,itr,level)
+    ifFreeNode(root)
     {
+        debugger;
+        if(this.childOfNode(root)>0)
+        {
+            return(false);
+        }
+        else{
+            return(true);
+        }
+    }
+    flushTree(root)
+    {
+        delete(root.Alphabet);
+        debugger;
+        return(true);
+    }
+    deleteWordRecursiveHard(root,word,level)
+    {
+        debugger;
         if (root) {
-            if(root.EndofWord)
+            if(root.EndofWord && word.length==level)
             {
+               // console.log("h1" + root.value +"level" +  level + "word length" + word.length);
                 if(this.childOfNode(root)==0)
                {
-
-                    return(delete(root.root));
+                    console.log(root.value);
+                    word=word.slice(0,word.length-1)
+                    console.log(word);
+                    debugger;
+                    return(this.flushTree(root));
                }
                else{
                     return(false);
                }
             }
-            else{
-                if (root.Alphabet.has(word[level])) {
-
-                    return (this.deleteWordRecursiveHard(root.Alphabet.get(word[level]), word,++itr, ++level));
-                }
-                else if(!(root.Alphabet.has(word[level])))  {
-                    return (false);
-                }
-                else{
-                    
+            else
+            {
+                if (this.deleteWordRecursiveHard(root.Alphabet.get(word[level]), word, ++level)) {
+                    debugger;
+                    if(this.ifFreeNode(root) && root)
+                    {
+                        debugger;
+                        this.flushTree(root);
+                    }   
                 }
             }
         } 
+    }
+    addKeyONData(root,word,arrayofkeys)
+    {
+        if(this.searchWordRecursive(root,word))
+        {
+            debugger;
+            for (let i = 0; i < word.length; i++) {
+                if (root.Alphabet.has(word[i])) {
+                    root = root.Alphabet.get(word[i]);
+                }
+            }
+            Object.keys(arrayofkeys).forEach(function(key) {
+                debugger;
+                root.data[key]= arrayofkeys[key];
+              });
+        }
+        else
+        {
+            console.log("word is not existed");
+        }
     }
     searchWordIsPresent(root, word) {
         let flag = 1;
@@ -278,16 +314,18 @@ var data = [
  {word:"rohanc", data:{ "phone": 9412276612 }},
  {word:"rohac", data:{ "phone": 9412276612 }},
  {word:"iajan", data:{ "phone": 9412276612 }},
-{word:"iajop", data:{ "phone": 9412276612 }},
-{word:"iajcn", data: { "phone": 9412276612 }},
- {word:"bno", data:{ "phone": 9412276612 }},
+ {word:"iajop", data:{ "phone": 9412276612 }},
+ {word:"iajcn", data: { "phone": 9412276612 }},
+ {word:"bno", data:{"phone": 9412276612 }},
  {word:"anmq", data:{ "phone": 9412276612 }},
  {word:"nmrt", data:{ "phone": 9412276612 }},
- {word:"lmr", data:{ "phone": 9412276612 }}
+ {word:"lmr", data:{ "phone": 9412276612 }},
+ {word:"opk", data:{ "phone": 9412276612 }}
 ];
 debugger;
 var c2 = new TrieOperation(root,data);
 debugger;
+c2.addKeyONData(root,"rohan",{"dsd":"sdsd","raja":"dsdsd","phone":954});
 console.log(c2.printSorted(root,data));
 debugger;
 // c2.insertNode(root, "rohan", { "phone": 9412276612 });
@@ -314,9 +352,12 @@ debugger;
 //debugger;
 //console.log(c2.searchWordRecursive(root, "drt", 0));
 debugger;
-// console.log(c2.deleteWordRecursiveSoft(root, "rohan", 0));
-// console.log(c2.searchWordRecursive(root, "rohan", 0));
-// console.log(c2.LongestPrefixFromTree(root));
+//console.log(c2.deleteWordRecursiveSoft(root, "rohan", 0));
+//console.log(c2.deleteWordRecursiveHard(root, "opk", 0,0));
+//console.log("hello");
+//console.log(c2.printSorted(root,data));
+ //console.log(c2.searchWordRecursive(root, "rohan", 0));
+ //console.log(c2.LongestPrefixFromTree(root));
 // console.log(root.deleteTree(root));
 // debugger;
 //console.log(root);
