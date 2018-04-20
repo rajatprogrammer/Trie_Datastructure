@@ -1,5 +1,5 @@
 "use strict";
-class TrieNode {
+export class TrieNode {
     constructor(ch='root') {
         this.value = ch;
         this.EndofWord = false;
@@ -11,7 +11,7 @@ class TrieNode {
         return(true);
     }
 }
-class TrieOperation {
+export class TrieOperation {
     constructor(root,arrayOfWord){
         let counter = 0;
         arrayOfWord.forEach((element)=>{
