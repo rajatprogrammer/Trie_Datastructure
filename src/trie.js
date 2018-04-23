@@ -1,5 +1,5 @@
 "use strict";
-export class TrieNode {
+ class TrieNode {
     constructor(ch='root') {
         this.value = ch;
         this.EndofWord = false;
@@ -11,7 +11,7 @@ export class TrieNode {
         return(true);
     }
 }
-export class TrieOperation {
+ class TrieOperation {
     constructor(root,arrayOfWord){
         let counter = 0;
         arrayOfWord.forEach((element)=>{
@@ -54,22 +54,8 @@ export class TrieOperation {
     sortKeyMap(map) {
         return (new Map([...map.entries()].sort()));
     }
-    updateDataOfString(root,data = { "no_value": "no value" }) {
-        if(root=this.searchWordRecursiveReturnRoot(root))
-        {
-            root.data
-        }
-        else{
-
-        }
-
-    }
     childOfNode(node) {
         return (node.Alphabet.size);
-    }
-    *iterator()
-    {
-        
     }
     checkKeyPresent(root,char)
     {
@@ -306,6 +292,66 @@ export class TrieOperation {
             return (false);
         }
     }
+    checkPrefixPresent(root,pref,i=0)
+    {
+        if ((root) && pref.length == i) {
+            debugger;
+            return (root)
+        }
+        else {
+            if (root.Alphabet.has(pref[i])) {
+                return (this.checkPrefixPresent(root.Alphabet.get(pref[i]),pref, ++i));
+            }
+            else {
+                return (false);
+            }
+        }
+    }
+    autoSuggestion(root,pref,suggestedList)
+    {
+        let word = [];
+        let count = 0;
+        if(root = this.checkPrefixPresent(root,pref))
+        {
+            if(root.EndofWord)
+            {
+                word[count] = pref;
+            }
+            if(this.childOfNode(root))
+            {
+                this.root.Alphabet.forEach((value, key) => {
+                    if (this.root != null) {
+                    }
+                })
+            }
+            else{
+                return(false);
+            }
+        }
+        else{
+            return(false);
+        }
+        
+    }
+    itreativeSuggestedList(root,word=[],k=0)
+    {
+        if(root && root.EndofWord && this.childOfNode(root)==0)
+        {
+            return(word);
+        }
+        else if(root && root.EndofWord)
+        {
+            word[k] = word[k] + root.value;
+        }
+        else
+        {
+            this.root.Alphabet.forEach((value, key) => {
+                if (this.root != null) {
+                }
+            })   
+        }
+    }
+
 }
 debugger;
  var root = new TrieNode('root');
@@ -325,8 +371,8 @@ var data = [
 debugger;
 var c2 = new TrieOperation(root,data);
 debugger;
-c2.addKeyONData(root,"rohan",{"dsd":"sdsd","raja":"dsdsd","phone":954});
-console.log(c2.printSorted(root,data));
+//c2.addKeyONData(root,"rohan",{"dsd":"sdsd","raja":"dsdsd","phone":954});
+console.log(c2.checkPrefixPresent(root,"roh"));
 debugger;
 // c2.insertNode(root, "rohan", { "phone": 9412276612 });
 // c2.insertNode(root, "rohanc", { "phone": 9412276612 });
